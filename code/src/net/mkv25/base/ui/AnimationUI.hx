@@ -24,6 +24,20 @@ class AnimationUI
 		frames = [frame];
 	}
 	
+	public function move(x:Float, y:Float):AnimationUI
+	{
+		artwork.x = x;
+		artwork.y = y;
+		
+		return this;
+	}
+	
+	public function center(offsetX:Int=0, offsetY:Int=0):Void
+	{
+		artwork.x = - Math.round(artwork.width / 2) + offsetX;
+		artwork.y = - Math.round(artwork.height / 2) + offsetY;
+	}
+	
 	function draw(frame:Int):Void
 	{
 		throw "Not implemented";

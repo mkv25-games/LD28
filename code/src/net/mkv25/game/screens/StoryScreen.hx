@@ -3,6 +3,8 @@ package net.mkv25.game.screens;
 import flash.text.TextFormatAlign;
 import motion.Actuate;
 import net.mkv25.base.core.Screen;
+import net.mkv25.base.ui.AnimationUI;
+import net.mkv25.base.ui.CharacterUI;
 import net.mkv25.base.ui.TextUI;
 import net.mkv25.game.ui.AnimatedTextUI;
 
@@ -11,6 +13,8 @@ class StoryScreen extends Screen
 	var textTitle:AnimatedTextUI;
 	var textScenario:AnimatedTextUI;
 	var textInstruction:AnimatedTextUI;
+	
+	var character:CharacterUI;
 	
 	public function new() 
 	{
@@ -33,6 +37,12 @@ class StoryScreen extends Screen
 		textInstruction = new AnimatedTextUI();
 		textInstruction.setup("Instructions", 0xFFFFFF).fontSize(18).align(TextFormatAlign.LEFT).size(600, 40).move(50, Screen.HEIGHT - 40);
 		
+		character = new CharacterUI();
+		character.setup("red", "img/animations/character_red_male.png");
+		character.center(200, Screen.HEIGHT - 188);
+		character.walkRight();
+		
+		artwork.addChild(character.artwork);
 		artwork.addChild(textTitle.artwork);
 		artwork.addChild(textScenario.artwork);
 		artwork.addChild(textInstruction.artwork);
