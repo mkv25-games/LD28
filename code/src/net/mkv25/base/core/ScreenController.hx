@@ -45,6 +45,7 @@ class ScreenController
 		
 		stage.addEventListener(Event.RESIZE, onStageResize);
 		stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyAction);
+		stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 		
 		return this;
 	}
@@ -60,6 +61,14 @@ class ScreenController
 			return;
 			
 		activeScreen.handleKeyAction(event);
+	}
+	
+	function onEnterFrame(event:Event)
+	{
+		if (activeScreen == null)
+			return;
+			
+		activeScreen.onEnterFrame(event);
 	}
 	
 	function onStageResize(e)

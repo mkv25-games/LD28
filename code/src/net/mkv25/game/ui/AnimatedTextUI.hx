@@ -1,6 +1,7 @@
 package net.mkv25.game.ui;
 
 import motion.Actuate;
+import motion.actuators.GenericActuator.IGenericActuator;
 import net.mkv25.base.core.Signal;
 
 import net.mkv25.base.ui.TextUI;
@@ -10,6 +11,7 @@ class AnimatedTextUI extends TextUI
 	public var animationComplete:Signal;
 	
 	var currentText:String;
+	var currentTimer:IGenericActuator;
 	
 	public function new() 
 	{
@@ -22,6 +24,16 @@ class AnimatedTextUI extends TextUI
 	
 	public function animateText(textToAdd:String):Void
 	{
+		if (currentText == textToAdd)
+		{
+			return;
+		}
+		
+		if (currentTimer != null)
+		{
+			currentTimer.onComplete(null);
+		}
+		
 		currentText = "";
 		animateAppendText(textToAdd);
 	}
@@ -39,7 +51,7 @@ class AnimatedTextUI extends TextUI
 		setText(currentText + "|");
 		textToAdd = textToAdd.substring(1);
 		
-		Actuate.timer(0.05).onComplete(animateAppendText, [textToAdd]);
+		currentTimer = Actuate.timer(0.05).onComplete(animateAppendText, [textToAdd]);
 	}
 	
 }

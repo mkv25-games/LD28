@@ -3,6 +3,7 @@ package net.mkv25.base.core;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.events.KeyboardEvent;
 import motion.Actuate;
 import openfl.Assets;
@@ -66,6 +67,12 @@ class Screen
 		#if debug
 			throw "No default key handler defined for screen on key press: " + event.keyCode;
 		#end
+	}
+	
+	// enter frame - rely on external controller to pass events to active screen
+	public function onEnterFrame(event:Event):Void
+	{
+		// override
 	}
 	
 	public function lockKeys()

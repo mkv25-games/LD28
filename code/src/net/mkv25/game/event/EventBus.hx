@@ -8,7 +8,8 @@ class EventBus
 	public static var requestNextScreen = new Signal();
 	public static var requestLastScreen = new Signal();
 	
-	// TODO: Add your own custom signals here 
+	// screen specific
+	public static var displayInstruction = new Signal();
 	
 	public function new() 
 	{
