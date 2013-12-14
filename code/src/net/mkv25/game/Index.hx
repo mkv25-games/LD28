@@ -5,6 +5,7 @@ import net.mkv25.base.core.Screen;
 import net.mkv25.base.core.ScreenController;
 import net.mkv25.base.ui.DebugUI;
 import net.mkv25.game.screens.IntroScreen;
+import net.mkv25.game.screens.StoryScreen;
 
 class Index
 {
@@ -19,6 +20,7 @@ class Index
 	
 	// screens
 	public static var introScreen:Screen;
+	public static var storyScreen:Screen;
 	
 	// play time
 	public static function setup():Void
@@ -36,12 +38,13 @@ class Index
 		// controllers
 		screenController = new ScreenController();
 		
+		// screens
+		introScreen = new IntroScreen();
+		storyScreen = new StoryScreen();
+		
 		// debugging
 		#if debug
 			debug = new DebugUI(screenController);
 		#end
-		
-		// screens
-		introScreen = new IntroScreen();
 	}
 }

@@ -26,7 +26,10 @@ class Main extends Sprite
 		
 		// wire up the index - this stuff might normally live in a controller
 		Index.screenController.setup(stage);
+		
 		Index.screenController.addScreen(Index.introScreen);
+		Index.screenController.addScreen(Index.storyScreen);
+		
 		EventBus.requestNextScreen.add(Index.screenController.handleRequestNextScreen);
 		EventBus.requestLastScreen.add(Index.screenController.handleRequestLastScreen);
 		

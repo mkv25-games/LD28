@@ -50,9 +50,10 @@ class IntroScreen extends Screen
 		Actuate.apply(textGameTitle.artwork, { alpha: 0.0 } );
 		Actuate.apply(button.artwork, { alpha: 0.0 } );
 		
-		Actuate.tween(textLD.artwork, 0.8, { alpha: 1.0 } ).delay(1.5);
-		Actuate.tween(textGameTitle.artwork, 0.8, { alpha: 1.0 } ).delay(3.0);
-		Actuate.tween(button.artwork, 0.8, { alpha: 1.0 } ).delay(4.5);
+		var delay:Float = 0.8;
+		Actuate.tween(textLD.artwork, 0.8, { alpha: 1.0 } ).delay(1.0 * delay);
+		Actuate.tween(textGameTitle.artwork, 0.8, { alpha: 1.0 } ).delay(1.5 * delay);
+		Actuate.tween(button.artwork, 0.8, { alpha: 1.0 } ).delay(2.0 * delay);
 	}
 	
 	function onBeginAction(model:ButtonUI)
