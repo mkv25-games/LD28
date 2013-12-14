@@ -28,10 +28,12 @@ class EntityUI extends BaseUI
 	{
 		hitRadius = radius;
 		
-		var graphics = artwork.graphics;
-		graphics.clear();
-		graphics.lineStyle(2, 0xFF0000);
-		graphics.drawCircle(0, 0, radius);
+		#if debug
+			var graphics = artwork.graphics;
+			graphics.clear();
+			graphics.lineStyle(2, 0xFF0000);
+			graphics.drawCircle(0, 0, radius);
+		#end
 	}
 	
 	public function setIgnoreCollisions(state:Bool):Void

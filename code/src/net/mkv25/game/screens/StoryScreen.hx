@@ -47,7 +47,7 @@ class StoryScreen extends Screen
 		textScenario.animationComplete.add(onScenarioAnimationComplete);
 		
 		textInstruction = new AnimatedTextUI();
-		textInstruction.setup("Instructions", 0xFFFFFF).fontSize(18).align(TextFormatAlign.LEFT).size(600, 40).move(50, Screen.HEIGHT - 40);
+		textInstruction.setup("Instructions", 0xFFFFFF).fontSize(18).align(TextFormatAlign.LEFT).size(600, 40).move(50, Screen.HEIGHT - 48);
 		
 		character = new CharacterUI();
 		character.setup();
