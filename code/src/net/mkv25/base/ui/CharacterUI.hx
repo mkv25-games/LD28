@@ -22,7 +22,7 @@ class CharacterUI extends AnimationUI
 		this.spritePath = spritePath;
 		
 		framesStanding = [0];
-		framesWalk = [1, 2, 3, 2];
+		framesWalk = [1, 2, 3, 4];
 		
 		artwork.scaleX = artwork.scaleY = pixelsPerPixel;
 	}
