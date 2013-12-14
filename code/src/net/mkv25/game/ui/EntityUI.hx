@@ -15,6 +15,7 @@ class EntityUI extends BaseUI
 	
 	var hitRadius:Int = 0;
 	var ignoreCollisions:Bool = false;
+	var collidingWith:EntityUI;
 	
 	public function new() 
 	{
@@ -53,20 +54,36 @@ class EntityUI extends BaseUI
 		var radiusDistance:Float = pointDistance - Math.abs(entity.hitRadius + this.hitRadius);
 		if (radiusDistance < 0)
 		{
+			if (collidingWith == null)
+			{
+				collidingWith = entity;
+				collideWith(entity);
+			}
+			
 			return true;
+		}
+		
+		if (collidingWith == entity)
+		{
+			collidingWith = null;
+			uncollideWith(entity);
 		}
 		
 		return false;
 	}
 	
-	public function interactWith(entity:EntityUI):Bool
+	public function interactWith(player:CharacterUI):Bool
 	{
-		// override, return true for sucessful interaction
-		if (Std.is(entity, CharacterUI))
-		{
-			var character:CharacterUI = cast entity;
-			character.claim(this);
-		}
-		return false;
+		player.claim(this);
+		
+		return true;
+	}
+	
+	public function collideWith(entity:EntityUI)
+	{
+	}
+	
+	public function uncollideWith(entity:EntityUI)
+	{
 	}
 }

@@ -50,7 +50,7 @@ class StoryScreen extends Screen
 		textInstruction.setup("Instructions", 0xFFFFFF).fontSize(18).align(TextFormatAlign.LEFT).size(600, 40).move(50, Screen.HEIGHT - 48);
 		
 		character = new CharacterUI();
-		character.setup();
+		character.setup("red", "img/animations/character_red_male.png", "Player");
 		character.setHitRadius(40);
 		character.move(50, Screen.HEIGHT - 130);
 		
@@ -59,6 +59,14 @@ class StoryScreen extends Screen
 		rose.setHitRadius(20);
 		rose.move(horizontalCenter, Screen.HEIGHT - 100);
 		addEntity(rose);
+		
+		var girl = new CharacterUI();
+		girl.setup("blue", "img/animations/character_blue_female_sitting.png", "Girl");
+		girl.setHitRadius(40);
+		girl.move(620, Screen.HEIGHT - 142);
+		addEntity(girl);
+		
+		character.setDefaultTarget(girl.artwork.x - 40);
 		
 		artwork.addChild(character.artwork);
 		artwork.addChild(textTitle.artwork);
@@ -144,7 +152,7 @@ class StoryScreen extends Screen
 		
 		for (entity in entities)
 		{
-			if (character.checkCollisionWith(entity))
+			if (entity.checkCollisionWith(character))
 			{
 				interactionWith = entity;
 			}
@@ -172,10 +180,10 @@ class StoryScreen extends Screen
 	
 	function doInteraction()
 	{
-		var interaction:EntityUI = checkForInteraction();
-		if (interaction != null)
+		var entity:EntityUI = checkForInteraction();
+		if (entity != null)
 		{
-			interaction.interactWith(character);
+			entity.interactWith(character);
 		}
 	}
 	
@@ -206,7 +214,7 @@ class StoryScreen extends Screen
 		if (event.keyCode == Keyboard.DOWN)
 		{
 			character.stopWalking();
-			if (flags.getFlag("Instruction DOWN") == false)
+			if (flags.getFlag("Instruction DOWN") == false && flags.getFlag("Instruction FIRST INTERACTION") == false)
 			{
 				EventBus.displayInstruction.dispatch("");
 				flags.setFlag("Instruction DOWN");

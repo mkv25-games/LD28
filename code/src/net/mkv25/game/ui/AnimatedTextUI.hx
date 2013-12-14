@@ -10,6 +10,7 @@ class AnimatedTextUI extends TextUI
 {
 	public var animationComplete:Signal;
 	
+	var cursorCharacter:String;
 	var currentText:String;
 	var currentTimer:IGenericActuator;
 	
@@ -19,7 +20,16 @@ class AnimatedTextUI extends TextUI
 		
 		animationComplete = new Signal();
 		
+		cursorCharacter = "|";
 		currentText = "";
+		currentTimer = null;
+	}
+	
+	public function setCursor(cursor:String):AnimatedTextUI
+	{
+		cursorCharacter = cursor;
+		
+		return this;
 	}
 	
 	public function animateText(textToAdd:String):Void
@@ -48,7 +58,7 @@ class AnimatedTextUI extends TextUI
 		}
 		
 		currentText = currentText + textToAdd.charAt(0);
-		setText(currentText + "|");
+		setText(currentText + cursorCharacter);
 		textToAdd = textToAdd.substring(1);
 		
 		currentTimer = Actuate.timer(0.05).onComplete(animateAppendText, [textToAdd]);
