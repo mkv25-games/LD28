@@ -52,7 +52,7 @@ class DecisionUI extends EntityUI
 			{
 				var option = options[i];
 				text.show();
-				text.setText("");
+				text.animateText("");
 				Actuate.timer(0.1 * i).onComplete(text.animateText, [option]);
 			}
 			else

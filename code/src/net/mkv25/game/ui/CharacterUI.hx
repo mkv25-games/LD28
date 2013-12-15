@@ -239,16 +239,14 @@ class CharacterUI extends EntityUI
 	
 	public function sayTo(entity:CharacterUI, words:String)
 	{
-		textTalk.animateText("");
-		textTalk.animateText(words);
-		animation.setFrames(framesTalking);
-		animation.play();
+		say(words);
 	}
 	
 	public function say(words:String)
 	{
 		textTalk.animateText("");
 		textTalk.animateText(words);
+		textTalk.show();
 		animation.setFrames(framesTalking);
 		animation.play();
 	}
@@ -271,8 +269,8 @@ class CharacterUI extends EntityUI
 			{
 				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
 				flags.setFlag("Instruction LEFT RIGHT");
-				textTalk.hide();
 			}
+			textTalk.hide();
 		}
 		
 		if (event.keyCode == Keyboard.LEFT)
@@ -282,8 +280,8 @@ class CharacterUI extends EntityUI
 			{
 				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
 				flags.setFlag("Instruction LEFT RIGHT");
-				textTalk.hide();
 			}
+			textTalk.hide();
 		}
 		
 		if (event.keyCode == Keyboard.DOWN)
