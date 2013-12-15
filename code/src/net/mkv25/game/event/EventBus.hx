@@ -10,6 +10,8 @@ class EventBus
 	
 	// screen specific
 	public static var displayInstruction = new Signal();
+	public static var showMenuOptions = new Signal();
+	public static var menuOptionSelected = new Signal();
 	
 	public function new() 
 	{

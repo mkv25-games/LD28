@@ -1,5 +1,6 @@
 package net.mkv25.game.ui;
 
+import flash.events.KeyboardEvent;
 import flash.geom.Point;
 import net.mkv25.base.core.Screen;
 import net.mkv25.base.core.Signal;
@@ -81,9 +82,16 @@ class EntityUI extends BaseUI
 	
 	public function collideWith(entity:EntityUI)
 	{
+		
 	}
 	
 	public function uncollideWith(entity:EntityUI)
 	{
+		
+	}
+	
+	public function handleKeyAction(event:KeyboardEvent):Void 
+	{
+		
 	}
 }

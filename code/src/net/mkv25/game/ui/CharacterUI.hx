@@ -1,11 +1,14 @@
 package net.mkv25.game.ui;
 
+import flash.events.KeyboardEvent;
+import flash.ui.Keyboard;
 import motion.Actuate;
 import net.mkv25.base.core.Screen;
 import net.mkv25.base.core.Signal;
 import net.mkv25.base.ui.BaseUI;
 import net.mkv25.base.ui.CharacterAnimationUI;
 import net.mkv25.game.event.EventBus;
+import net.mkv25.game.Index;
 
 class CharacterUI extends EntityUI
 {
@@ -206,6 +209,14 @@ class CharacterUI extends EntityUI
 		
 		player.walkToAndFace(artwork.x - 40, this);
 		
+		var flags = Index.gameModel.flags;
+		var options = new Array<String>();
+		options.push("Say hello");
+		options.push("Run away");
+		options.push("Offer rose");
+		
+		EventBus.showMenuOptions.dispatch(options);
+		
 		return true;
 	}
 	
@@ -213,14 +224,12 @@ class CharacterUI extends EntityUI
 	{
 		animation.setFrames(framesBlushing);
 		animation.play();
-		trace("collide with " + entity.name);
 	}
 	
 	override public function uncollideWith(entity:EntityUI)
 	{
 		textTalk.animateText("");
 		faceRight();
-		trace("uncollide with " + entity.name);
 	}
 	
 	public function setDefaultTarget(x:Float)
@@ -228,7 +237,15 @@ class CharacterUI extends EntityUI
 		targetX = x;
 	}
 	
-	function sayTo(entity:CharacterUI, words:String)
+	public function sayTo(entity:CharacterUI, words:String)
+	{
+		textTalk.animateText("");
+		textTalk.animateText(words);
+		animation.setFrames(framesTalking);
+		animation.play();
+	}
+	
+	public function say(words:String)
 	{
 		textTalk.animateText("");
 		textTalk.animateText(words);
@@ -241,6 +258,43 @@ class CharacterUI extends EntityUI
 		targetEntity = entity;
 		stopWalking();
 		moveTowardsTarget(x);
+	}
+	
+	override public function handleKeyAction(event:KeyboardEvent):Void 
+	{
+		var flags = Index.gameModel.flags;
+		
+		if (event.keyCode == Keyboard.RIGHT)
+		{
+			this.walkRight();
+			if (flags.getFlag("Instruction LEFT RIGHT") == false)
+			{
+				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
+				flags.setFlag("Instruction LEFT RIGHT");
+				textTalk.hide();
+			}
+		}
+		
+		if (event.keyCode == Keyboard.LEFT)
+		{
+			this.walkLeft();
+			if (flags.getFlag("Instruction LEFT RIGHT") == false)
+			{
+				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
+				flags.setFlag("Instruction LEFT RIGHT");
+				textTalk.hide();
+			}
+		}
+		
+		if (event.keyCode == Keyboard.DOWN)
+		{
+			this.stopWalking();
+			if (flags.getFlag("Instruction DOWN") == false && flags.getFlag("Instruction FIRST INTERACTION") == false)
+			{
+				EventBus.displayInstruction.dispatch("");
+				flags.setFlag("Instruction DOWN");
+			}
+		}
 	}
 	
 }

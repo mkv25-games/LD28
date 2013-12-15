@@ -2,6 +2,8 @@ package net.mkv25.game.screens;
 
 import flash.events.Event;
 import flash.events.KeyboardEvent;
+import flash.media.Sound;
+import flash.media.SoundChannel;
 import flash.text.TextFormatAlign;
 import flash.ui.Keyboard;
 import motion.Actuate;
@@ -14,7 +16,9 @@ import net.mkv25.game.Index;
 import net.mkv25.game.ui.AnimatedTextUI;
 import net.mkv25.game.ui.BitmapEntityUI;
 import net.mkv25.game.ui.CharacterUI;
+import net.mkv25.game.ui.DecisionUI;
 import net.mkv25.game.ui.EntityUI;
+import openfl.Assets;
 
 class StoryScreen extends Screen
 {
@@ -22,9 +26,13 @@ class StoryScreen extends Screen
 	var textScenario:AnimatedTextUI;
 	var textInstruction:AnimatedTextUI;
 	
+	var focus:EntityUI;
 	var character:CharacterUI;
 	var entities:Array<EntityUI>;
 	var characterInteractionEntity:EntityUI;
+	var decision:DecisionUI;
+	
+	var musicChannel:SoundChannel;
 	
 	public function new() 
 	{
@@ -68,17 +76,42 @@ class StoryScreen extends Screen
 		
 		character.setDefaultTarget(girl.artwork.x - 40);
 		
+		decision = new DecisionUI();
+		decision.setup();
+		decision.display(["Flee", "Hug", "Cry"]);
+		decision.move(70, 170);
+		decision.hide();
+		
 		artwork.addChild(character.artwork);
 		artwork.addChild(textTitle.artwork);
 		artwork.addChild(textScenario.artwork);
 		artwork.addChild(textInstruction.artwork);
+		artwork.addChild(decision.artwork);
+		
+		focus = character;
 		
 		EventBus.displayInstruction.add(onDisplayInstruction);
+		EventBus.showMenuOptions.add(onShowMenuOptions);
+		EventBus.menuOptionSelected.add(onMenuOptionSeleted);
 	}
 	
 	function onDisplayInstruction(message:String)
 	{
 		textInstruction.animateText(message);
+	}
+	
+	function onShowMenuOptions(options:Array<String>)
+	{
+		focus = decision;
+		decision.display(options);
+		decision.show();
+	}
+	
+	function onMenuOptionSeleted(option:String)
+	{
+		decision.hide();
+		focus = character;
+		character.say("I have chosen to " + option.toLowerCase());
 	}
 	
 	function addEntity(entity:EntityUI)
@@ -108,6 +141,17 @@ class StoryScreen extends Screen
 		textInstruction.setText("");
 		
 		showTitle();
+		playMusic();
+	}
+	
+	function playMusic()
+	{
+		if (musicChannel != null)
+		{
+			musicChannel.stop();
+		}
+		var music:Sound = Assets.getSound("sounds/intro.mp3");
+		musicChannel = music.play(0, 9999);
 	}
 	
 	function showTitle()
@@ -190,43 +234,22 @@ class StoryScreen extends Screen
 	override public function handleKeyAction(event:KeyboardEvent):Void 
 	{
 		var flags = Index.gameModel.flags;
+		var currentFocus = focus;
 		
-		if (event.keyCode == Keyboard.RIGHT)
+		if (currentFocus != null)
 		{
-			character.walkRight();
-			if (flags.getFlag("Instruction LEFT RIGHT") == false)
-			{
-				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
-				flags.setFlag("Instruction LEFT RIGHT");
-			}
+			currentFocus.handleKeyAction(event);
 		}
 		
-		if (event.keyCode == Keyboard.LEFT)
+		if (currentFocus == character)
 		{
-			character.walkLeft();
-			if (flags.getFlag("Instruction LEFT RIGHT") == false)
+			if (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.E)
 			{
-				EventBus.displayInstruction.dispatch("Press DOWN to Stop");
-				flags.setFlag("Instruction LEFT RIGHT");
-			}
-		}
-		
-		if (event.keyCode == Keyboard.DOWN)
-		{
-			character.stopWalking();
-			if (flags.getFlag("Instruction DOWN") == false && flags.getFlag("Instruction FIRST INTERACTION") == false)
-			{
-				EventBus.displayInstruction.dispatch("");
-				flags.setFlag("Instruction DOWN");
-			}
-		}
-		
-		if (event.keyCode == Keyboard.ENTER || event.keyCode == Keyboard.E)
-		{
-			doInteraction();
-			if (flags.getFlag("Instruction FIRST INTERACTION"))
-			{
-				EventBus.displayInstruction.dispatch("");
+				doInteraction();
+				if (flags.getFlag("Instruction FIRST INTERACTION"))
+				{
+					EventBus.displayInstruction.dispatch("");
+				}
 			}
 		}
 	}

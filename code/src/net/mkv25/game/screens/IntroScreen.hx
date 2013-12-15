@@ -25,7 +25,8 @@ class IntroScreen extends Screen
 	
 	override private function setup():Void 
 	{
-		setBackground("img/intro_screen.png");
+		setBackground("img/backgrounds/swirl.png");
+		background.scaleX = background.scaleY = 4.0;
 		
 		textLD = new TextUI();
 		textLD.setup("Ludum Dare 28", 0xFFFFFF).size(300, 50).center(textLD.artwork, cast horizontalCenter, 70);
