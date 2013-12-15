@@ -12,6 +12,7 @@ class EventBus
 	public static var displayInstruction = new Signal();
 	public static var showMenuOptions = new Signal();
 	public static var menuOptionSelected = new Signal();
+	public static var giveFocusToPlayer = new Signal();
 	
 	public function new() 
 	{

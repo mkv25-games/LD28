@@ -9,6 +9,7 @@ import net.mkv25.base.ui.BaseUI;
 import net.mkv25.base.ui.CharacterAnimationUI;
 import net.mkv25.game.event.EventBus;
 import net.mkv25.game.Index;
+import net.mkv25.game.model.Action;
 
 class CharacterUI extends EntityUI
 {
@@ -210,10 +211,10 @@ class CharacterUI extends EntityUI
 		player.walkToAndFace(artwork.x - 40, this);
 		
 		var flags = Index.gameModel.flags;
-		var options = new Array<String>();
-		options.push("Say hello");
-		options.push("Run away");
-		options.push("Offer rose");
+		var options = new Array<Action>();
+		options.push(Action.SAY_HELLO);
+		options.push(Action.RUN_AWAY);
+		options.push(Action.OFFER_ROSE);
 		
 		EventBus.showMenuOptions.dispatch(options);
 		

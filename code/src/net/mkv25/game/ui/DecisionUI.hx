@@ -5,6 +5,7 @@ import flash.ui.Keyboard;
 import motion.Actuate;
 import net.mkv25.base.ui.BitmapUI;
 import net.mkv25.game.event.EventBus;
+import net.mkv25.game.model.Action;
 
 class DecisionUI extends EntityUI
 {
@@ -12,7 +13,7 @@ class DecisionUI extends EntityUI
 	var textOptions:Array<AnimatedTextUI>;
 	
 	var selection:Int;
-	var currentOptions:Array<String>;
+	var currentOptions:Array<Action>;
 	
 	public function new() 
 	{
@@ -29,7 +30,7 @@ class DecisionUI extends EntityUI
 		menuSelection.setup("img/menu_selection.png");
 		menuSelection.move(10, 35);
 		
-		for (i in 0...3)
+		for (i in 0...5)
 		{
 			var text = new AnimatedTextUI();
 			text.setup("Option " + i, 0xFFFFFF).fontSize(18).align(TextFormatAlign.LEFT).size(180, 30).move(30, 10 + 40 * i);
@@ -41,7 +42,7 @@ class DecisionUI extends EntityUI
 		artwork.addChild(menuSelection.artwork);
 	}
 	
-	public function display(options:Array<String>)
+	public function display(options:Array<Action>)
 	{
 		this.currentOptions = options;
 		
@@ -53,7 +54,7 @@ class DecisionUI extends EntityUI
 				var option = options[i];
 				text.show();
 				text.animateText("");
-				Actuate.timer(0.1 * i).onComplete(text.animateText, [option]);
+				Actuate.timer(0.1 * i).onComplete(text.animateText, [option.name]);
 			}
 			else
 			{

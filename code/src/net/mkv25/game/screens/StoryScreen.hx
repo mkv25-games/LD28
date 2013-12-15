@@ -13,6 +13,7 @@ import net.mkv25.base.ui.CharacterAnimationUI;
 import net.mkv25.base.ui.TextUI;
 import net.mkv25.game.event.EventBus;
 import net.mkv25.game.Index;
+import net.mkv25.game.model.Action;
 import net.mkv25.game.ui.AnimatedTextUI;
 import net.mkv25.game.ui.BitmapEntityUI;
 import net.mkv25.game.ui.CharacterUI;
@@ -78,7 +79,7 @@ class StoryScreen extends Screen
 		
 		decision = new DecisionUI();
 		decision.setup();
-		decision.display(["Flee", "Hug", "Cry"]);
+		decision.display([Action.RUN_AWAY]);
 		decision.move(70, 170);
 		decision.hide();
 		
@@ -93,6 +94,7 @@ class StoryScreen extends Screen
 		EventBus.displayInstruction.add(onDisplayInstruction);
 		EventBus.showMenuOptions.add(onShowMenuOptions);
 		EventBus.menuOptionSelected.add(onMenuOptionSeleted);
+		EventBus.giveFocusToPlayer.add(onGiveFocusToPlayer);
 	}
 	
 	function onDisplayInstruction(message:String)
@@ -100,18 +102,24 @@ class StoryScreen extends Screen
 		textInstruction.animateText(message);
 	}
 	
-	function onShowMenuOptions(options:Array<String>)
+	function onShowMenuOptions(options:Array<Action>)
 	{
 		focus = decision;
 		decision.display(options);
 		decision.show();
 	}
 	
-	function onMenuOptionSeleted(option:String)
+	function onMenuOptionSeleted(option:Action)
 	{
 		decision.hide();
 		focus = character;
-		character.say("I have chosen to " + option.toLowerCase());
+		option.signal.dispatch(option);
+		character.say("I have chosen to " + option.name.toLowerCase());
+	}
+	
+	function onGiveFocusToPlayer(?e)
+	{
+		focus = character;
 	}
 	
 	function addEntity(entity:EntityUI)
